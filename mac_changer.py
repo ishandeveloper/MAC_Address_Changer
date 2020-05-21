@@ -11,7 +11,8 @@ def get_arguments():
     (options, arguments) = parser.parse_args()
     if not options.interface:
         print('[!] Please Select An Interface Using -i \n\tFor Example : -i eth0')
-    if not options.new_mac:
+        exit(-1)
+    elif not options.new_mac:
         print('[!] Please Type New Mac Address Using -m \n\tFor Example : -m 00:11:22:33:44:55')
     else:
         mac_changer(options.interface, options.new_mac)
