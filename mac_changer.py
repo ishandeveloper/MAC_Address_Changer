@@ -19,7 +19,10 @@ def get_arguments():
         mac_changer(options.interface, options.new_mac)
         ifconfig_result = subprocess.check_output(["ifconfig", options.interface])
         mac_address_search = re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", str(ifconfig_result))
-        print('[✓] MAC ADDRESS SUCCESSFULLY CHANGED TO ' + mac_address_search.group(0) + ' FOR ' + options.interface)
+        if mac_address_search and mac_address_search.group(0) == options.new_mac:
+            print('[✓] MAC ADDRESS SUCCESSFULLY CHANGED TO ' + mac_address_search.group(0) + ' FOR ' + options.interface)
+        else:
+            print('[!] COULD NOT CHANGE THE MAC ADDRESS. ERROR CODE 0x86')
 
 
 def mac_changer(interface, new_mac):
