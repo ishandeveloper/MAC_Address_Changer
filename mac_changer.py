@@ -2,6 +2,7 @@
 
 import subprocess
 import optparse
+import re
 
 
 def get_arguments():
@@ -16,6 +17,9 @@ def get_arguments():
         print('[!] Please Type New Mac Address Using -m \n\tFor Example : -m 00:11:22:33:44:55')
     else:
         mac_changer(options.interface, options.new_mac)
+        ifconfig_result = subprocess.check_output(["ifconfig", options.interface])
+        mac_address_search = re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", str(ifconfig_result))
+        print('[✓] MAC ADDRESS SUCCESSFULLY CHANGED TO ' + mac_address_search.group(0) + ' FOR ' + options.interface)
 
 
 def mac_changer(interface, new_mac):
@@ -23,8 +27,6 @@ def mac_changer(interface, new_mac):
     subprocess.call(["ifconfig", interface, "down"])
     subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
     subprocess.call(["ifconfig", interface, "up"])
-    print('[✓] MAC ADDRESS SUCCESSFULLY CHANGED TO ' + new_mac + ' FOR ' + interface)
 
 
 get_arguments()
-
